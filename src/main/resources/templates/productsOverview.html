@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Products</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <div th:if="${products.size() > 0}"></div>
+    <input type="hidden" id="tp" value="0" />
+    <script type="text/javascript">
+        function addProduct(pid)
+        {
+            $.get("http://localhost:8080/addProductToShoppingCart/"+pid, function()
+            {
+            }).done(function(resp)
+            {
+                if(resp.response == "success")
+                {
+                    alert("Product is toegevoegd aan je winkelwagen.");
+                    var tp = parseInt($("#tp").val()) + 1;
+                    $("#tp").val(tp);
+                    if(tp > 0)
+                    {
+                        $('#shoppingCartBttn').show();
+                    }else{
+                        $('#shoppingCartBttn').hide();
+                    }
+                }else{
+                    alert("Er ging iets mis met het toevoegen van het product");
+                }
+            }).fail(function()
+            {
+                alert("error");
+            });
+        }
+    </script>
+    <p>
+        <a href="/flagOverview">Flag</a>
+        <a href="/bannerOverview">Banner</a>
+        <a href="/folderOverview">Folder</a>
+        <a href="/productsOverview">Alle Producten</a>
+    </p>
+
+    <form autocomplete="off" action="#" th:action="@{productsOverview}" th:object="${products}" method="post" role="form">
+        <table style="text-align:center;" class="table table-hover" th:each="product : ${products}">
+            <thead style="background-color: black; color: #eeeeee">
+            <tr>
+                <th style="text-align:center; vertical-align:middle;" colspan="2">Product</th>
+                <th style="text-align:center; vertical-align:middle;">Prijs</th>
+                <th style="text-align:center; vertical-align:middle;">Beschrijving</th>
+                <th style="text-align:center; vertical-align:middle;">&nbsp</th>
+            </tr>
+            </thead>
+            <tr class="table-cell">
+                <td colspan="2"><img width="150px" height="150px" src="http://www.rock-is.nl/wp-content/uploads/2016/08/product-placeholder.jpg" alt="afbeelding"/></br><p th:text="${product.productName}"></p></td>
+                <td style="text-align:center; vertical-align:middle;">
+                    <span th:text="${product.price}"></span>
+                </td>
+                <td style="text-align:center; vertical-align:middle;">
+                    <span th:text="${product.description}"></span>
+                </td>
+                <td style="text-align:center; vertical-align:middle;"><button name="action" type="button" class="btn btn-primary" value="addToCart" data-toggle="button" aria-pressed="false" autocomplete="off" th:onclick="'javascript:addProduct(\''+${product.id}+'\');'"><span class="glyphicon glyphicon-shopping-cart"></span> Add to Shoppingcart</button> </td>
+            </tr>
+        </table>
+    </form>
+    <div th:if="${products.size()==0}">
+        <div th:text="'Geen producten gevonden'"></div>
+    </div>
+    <form th:action="@{shoppingCart}" method="GET" role="form">
+
+        <button type="submit" name="action" id="shoppingCartBttn" class="btn btn-primary">Naar winkelwagen</button>
+        <br /><br />
+    </form>
+    <script type="text/javascript">
+        $('#shoppingCartBttn').hide();
+    </script>
+</div>
+</body>
+</html>
+
+
