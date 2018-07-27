@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Products : View all</title>
+</head>
+<body>
+<div class="container">
+    <h4 class="float-left mt-2">Products : View all</h4>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Naam</th>
+            <th>Prijs</th>
+            <th>In opslag</th>
+            <th>Kleur</th>
+            <th>Beschrijving</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${products == null}">
+            <td colspan="3">No products</td>
+        </tr>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.productId}">1</td>
+            <td th:text="${product.getProductName()}"></td>
+            <td th:text="${product.getPrice()}"></td>
+            <td th:text="${product.getStock()}"></td>
+            <td th:text="${product.getColour()}"></td>
+            <td><a href="list" th:href="@{'/' + ${product.productId}}"
+                   th:text="${product.description}"> Beschrijving </a></td>
+        </tr>
+        </tbody>
+    </table>
+    <form th:action="@{/admin/products/productConfiguration}" method="GET" role="form">
+    <button type="submit" name="action">Producten Configureren</button>
+    </form>
+</div>
+</body>
+</html>
