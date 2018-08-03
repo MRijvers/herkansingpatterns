@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Producten Overzicht</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <h1 align="center">Producten overzicht</h1>
+        <div class="col-md-10 col-md-offset-1">
+
+            <div class="panel panel-default panel-table">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col col-xs-6">
+                            <h3 class="panel-title">Alle producten</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped table-bordered table-list">
+                        <thead>
+                        <tr>
+                            <th>Naam</th>
+                            <th>Prijs</th>
+                            <th>Categorie</th>
+                            <th>Kleur</th>
+                            <th>Beschrijving</th>
+                            <th><em class="fa fa-cog"></em> Acties</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="product : ${products}">
+                            <td th:text="${product.getProductName()}"><a></a></td>
+                            <td align="center" th:text="${#numbers.formatCurrency(product.getPrice())}"></td>
+                            <td align="center" th:text="${product.getCategory()}"></td>
+                            <td align="center" th:text="${product.getColour()}"></td>
+                            <td th:text="${product.getDescription()}"></td>
+                            <form th:action="@{/shoppingCart/addToCart}" method="POST" role="form">
+                                <td><button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart</button></td>
+                            </form>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col col-xs-4">Page 1 of 5
+                        </div>
+                        <div class="col col-xs-8">
+                            <ul class="pagination hidden-xs pull-right">
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                            </ul>
+                            <ul class="pagination visible-xs pull-right">
+                                <li><a href="#">«</a></li>
+                                <li><a href="#">»</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div></div></div>
+</body>
+</html>
