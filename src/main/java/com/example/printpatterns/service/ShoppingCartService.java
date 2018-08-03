@@ -1,6 +1,7 @@
 package com.example.printpatterns.service;
 
 import com.example.printpatterns.domain.entity.Product;
+import com.example.printpatterns.exception.NotEnoughProductsInStockException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ public interface ShoppingCartService {
 
     Map<Product, Integer> getProductsInCart();
 
-    // void checkout() throws NotEnoughProductsInStockException;
+    void checkout() throws NotEnoughProductsInStockException;
 
     BigDecimal getTotal();
 }
