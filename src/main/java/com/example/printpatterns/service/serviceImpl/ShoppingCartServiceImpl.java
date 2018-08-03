@@ -2,12 +2,12 @@ package com.example.printpatterns.service.serviceImpl;
 
 import com.example.printpatterns.data.ProductRepository;
 import com.example.printpatterns.domain.entity.Product;
+import com.example.printpatterns.exception.NotEnoughProductsInStockException;
 import com.example.printpatterns.service.ShoppingCartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -16,10 +16,10 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Service("shoppingCartService")
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-@Repository
 @Transactional
 @Slf4j
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -58,5 +58,21 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Transactional
     public BigDecimal getTotal() {
         return products.entrySet().stream().map(entry -> entry.getKey().getPrice().multiply(BigDecimal.valueOf(entry.getValue()))).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+    }
+
+    @Transactional
+    public void checkout() throws NotEnoughProductsInStockException {
+        Product product;
+        for (Map.Entry<Product, Integer> entry : products.entrySet()) {
+            // Refresh quantity for every product before checking
+            product = productRepository.findOneByProductId(entry.getKey().getProductId());
+            if (product.getStock() < entry.getValue())
+                throw new NotEnoughProductsInStockException(product);
+            entry.getKey().setStock(product.getStock() - entry.getValue());
+        }
+
+        productRepository.save(products.keySet());
+        productRepository.flush();
+        products.clear();
     }
 }

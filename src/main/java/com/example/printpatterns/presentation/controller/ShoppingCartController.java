@@ -1,5 +1,6 @@
 package com.example.printpatterns.presentation.controller;
 
+import com.example.printpatterns.exception.NotEnoughProductsInStockException;
 import com.example.printpatterns.service.ProductService;
 import com.example.printpatterns.service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +30,25 @@ public class ShoppingCartController {
         return modelAndView;
     }
 
-    @RequestMapping(value = {"shoppingCart/cart/addProduct/{productId}"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/shoppingCart/cart/addProduct/{productId}"}, method = RequestMethod.GET)
     public ModelAndView addProductToCart(@PathVariable("productId") Long productId) {
         shoppingCartService.addProduct(productService.findByProductId(productId));
         return shoppingCart();
     }
 
-    @RequestMapping(value = {"shoppingCart/cart/removeProduct/{productId}"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"shoppingCart/cart/removeProduct/{productId}"}, method = RequestMethod.GET)
     public ModelAndView removeProductFromCart(@PathVariable("productId") Long productId){
         shoppingCartService.removeProduct(productService.findByProductId(productId));
+        return shoppingCart();
+    }
+
+    @RequestMapping( value = {"shoppingCart/checkout"}, method = RequestMethod.GET)
+    public ModelAndView checkout() {
+        try {
+            shoppingCartService.checkout();
+        } catch (NotEnoughProductsInStockException e) {
+            return shoppingCart().addObject("outOfStockMessage", e.getMessage());
+        }
         return shoppingCart();
     }
 }

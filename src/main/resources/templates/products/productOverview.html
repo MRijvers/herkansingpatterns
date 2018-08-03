@@ -4,10 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Producten Overzicht</title>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
+    <script src="https://use.fontawesome.com/c560c025cf.js"></script>
 </head>
 <body>
 <div class="container">
@@ -20,6 +22,11 @@
                     <div class="row">
                         <div class="col col-xs-6">
                             <h3 class="panel-title">Alle producten</h3>
+                        </div>
+                        <div class="col col-xs-6 pull-right">
+                            <form th:action="@{/shoppingCart/cart}" method="GET" role="form">
+                                <button type="submit" class="btn btn-sm btn-primary btn-create pull-right"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Winkelwagen</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -42,9 +49,11 @@
                             <td align="center" th:text="${product.getCategory()}"></td>
                             <td align="center" th:text="${product.getColour()}"></td>
                             <td th:text="${product.getDescription()}"></td>
-                            <form th:action="@{/shoppingCart/addToCart}" method="POST" role="form">
-                                <td><button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart</button></td>
+                            <td>
+                            <form th:action="@{/shoppingCart/cart/addProduct/__${product.getProductId()}__}" method="GET" role="form">
+                                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart</button>
                             </form>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
