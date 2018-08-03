@@ -1,29 +1,42 @@
 package com.example.printpatterns.service.serviceimpl;
 
-import com.example.printpatterns.domain.Product;
-import com.example.printpatterns.repositories.ProductRepository;
+import com.example.printpatterns.data.ProductRepository;
+import com.example.printpatterns.domain.entity.Product;
 import com.example.printpatterns.service.ProductService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("productService")
+@Repository
 @Transactional
+@Slf4j
 public class ProductServiceImpl implements ProductService {
+
     @Autowired
     private ProductRepository productRepository;
 
-    @Override
-    public List<Product> findAll()
-    {
+    @Transactional
+    public List<Product> findAll() {
         return productRepository.findAll();
     }
 
-    @Override
-    public Product findProductByProductCode(Long productCode)
-    {
-        return productRepository.findProductByProductCode(productCode);
+    @Transactional
+    public Product findByProductId(Long productId) {
+        return productRepository.findByProductId(productId);
+    }
+
+    @Transactional
+    public void deleteByProductId(Long productId) {
+        productRepository.deleteById(productId);
+    }
+
+    @Transactional
+    public Product save(Product product) {
+        return productRepository.save(product);
     }
 }
