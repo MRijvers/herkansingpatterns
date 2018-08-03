@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Creation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .form-area
+        {
+            background-color: #FAFAFA;
+            padding: 10px 40px 60px;
+            margin: 10px 0px 60px;
+            border: 1px solid GREY;
+            height: 800px;
+        }
+        input[readonly]{
+            background-color: lightgray;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <tbody>
+            <div th:if="${product.productId} == null">
+                <div class="col-md-5">
+                    <div class="form-area">
+                        <form th:action="@{/admin/products/productCreation}" th:object="${product}" method="post">
+                            <h3 style="margin-bottom: 25px; text-align: center;">Product aanmaken</h3>
+                            <div class="form-group">
+                                <label for="title">ProductNaam</label>
+                                <input type="text" class="form-control" name="name" th:field="*{productName}" placeholder="Product naam" value="Product naam" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="title">Categorie</label>
+                                <select class="form-control" title="categorie" name="categorie" th:field="*{category}" required>
+                                    <option value="categorie 1">categorie 1</option>
+                                    <option value="categorie 2">categorie 2</option>
+                                    <option value="categorie 3">categorie 3</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Kleur</label>
+                                <input type="text" class="form-control" name="colour" th:field="*{colour}" placeholder="Kleur" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Prijs</label>
+                                <input type="text" class="form-control" name="price" th:field="*{price}" placeholder="€ Prijs ,-" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Voorraad</label>
+                                <input type="text" class="form-control" name="stock" th:field="*{stock}" placeholder="Op voorraad" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Beschrijving</label>
+                                <textarea class="form-control" th:field="*{description}" placeholder="Beschrijving" maxlength="140" rows="7"></textarea>
+                            </div>
+                            <button type="submit" name="submit" class="btn btn-primary pull-right">Creeër product</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${product.productId}!= null">
+            <div class="col-md-5">
+                <div class="form-area">
+
+                        <form class="form-group" action="/admin/products/productUpdate" th:action="@{/admin/products/productUpdate}" th:object="${product}" method="post">
+                            <h3 style="margin-bottom: 25px; text-align: center;">Product updaten</h3>
+                            <label>Product ID</label>
+                            <input th:type="text" name="id" th:field="${product.productId}" readonly/>
+                            <div class="form-group">
+                                <label for="title">ProductNaam</label>
+                                <input type="text" class="form-control" id="title" th:field="*{productName}" />
+                            </div>
+                            <div class="form-group">
+                                <label for="title">Categorie</label>
+                                <select class="form-control" name="categorie" th:field="*{category}" required>
+                                    <option value="categorie 1">categorie 1</option>
+                                    <option value="categorie 2">categorie 2</option>
+                                    <option value="categorie 3">categorie 3</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Kleur</label>
+                                <input type="text" class="form-control" name="colour" th:field="*{colour}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Prijs</label>
+                                <input type="text" class="form-control" name="price" th:field="*{price}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">voorraad</label>
+                                <input type="text" class="form-control" name="stock" th:field="*{stock}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Beschrijving</label>
+                                <textarea class="form-control" id="content" th:field="${product.description}" maxlength="140" rows="7"></textarea>
+                            </div>
+                            <a href="#" th:href="@{/}" class="btn btn-danger pull-right" style="margin-left: 5px;" role="button">Annuleren</a>
+                            <button type="submit" class="btn btn-primary pull-right" onclick="return confirm('Wil je doorgaan met opslaan?')">Updaten</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </tbody>
+    </div>
+</body>
+</html>
