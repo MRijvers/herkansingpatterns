@@ -3,7 +3,7 @@ package com.example.printpatterns.service.serviceImpl;
 import com.example.printpatterns.data.ProductRepository;
 import com.example.printpatterns.domain.entity.Product;
 import com.example.printpatterns.service.ProductService;
-import org.assertj.core.util.Lists;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -12,8 +12,9 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("productService")
+@Repository
 @Transactional
-// @Slf4j
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
@@ -25,15 +26,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Transactional
-    public Product findByProductId(Long id) {
-        return productRepository.findByProductId(id);
+    public Product findByProductId(Long productId) {
+        return productRepository.findByProductId(productId);
     }
 
     @Transactional
-    public Product removeByProductId(Long id) {
-        return productRepository.removeByProductId(id);
+    public void deleteByProductId(Long productId) {
+        productRepository.deleteById(productId);
     }
 
+    @Transactional
     public Product save(Product product) {
         return productRepository.save(product);
     }

@@ -10,7 +10,5 @@ import java.util.List;
 public interface ProductRepository extends CrudRepository<Product, Long> {
     List<Product> findAll();
 
-    Product findByProductId(Long Id);
-
-    Product removeByProductId(Long Id);
+    Product findByProductId(Long productId);
 }

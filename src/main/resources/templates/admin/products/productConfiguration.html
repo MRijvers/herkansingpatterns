@@ -14,103 +14,97 @@
             padding: 10px 40px 60px;
             margin: 10px 0px 60px;
             border: 1px solid GREY;
+            height: 800px;
+        }
+        input[readonly]{
+            background-color: lightgray;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <tbody>
-        <div class="col-md-5">
-            <div class="form-area">
-                <form th:action="@{/admin/products/productCreation}" th:object="${product}" method="post">
-                    <br style="clear:both">
-                    <h3 style="margin-bottom: 25px; text-align: center;">Product aanmaken</h3>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="name" th:field="*{productName}" placeholder="Product naam" required>
+            <div th:if="${product.productId} == null">
+                <div class="col-md-5">
+                    <div class="form-area">
+                        <form th:action="@{/admin/products/productCreation}" th:object="${product}" method="post">
+                            <h3 style="margin-bottom: 25px; text-align: center;">Product aanmaken</h3>
+                            <div class="form-group">
+                                <label for="title">ProductNaam</label>
+                                <input type="text" class="form-control" name="name" th:field="*{productName}" placeholder="Product naam" value="Product naam" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="title">Categorie</label>
+                                <select class="form-control" title="categorie" name="categorie" th:field="*{category}" required>
+                                    <option value="categorie 1">categorie 1</option>
+                                    <option value="categorie 2">categorie 2</option>
+                                    <option value="categorie 3">categorie 3</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Kleur</label>
+                                <input type="text" class="form-control" name="colour" th:field="*{colour}" placeholder="Kleur" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Prijs</label>
+                                <input type="text" class="form-control" name="price" th:field="*{price}" placeholder="€ Prijs ,-" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Voorraad</label>
+                                <input type="text" class="form-control" name="stock" th:field="*{stock}" placeholder="Op voorraad" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Beschrijving</label>
+                                <textarea class="form-control" th:field="*{description}" placeholder="Beschrijving" maxlength="140" rows="7"></textarea>
+                            </div>
+                            <button type="submit" name="submit" class="btn btn-primary pull-right">Creeër product</button>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <select class="form-control" name="categorie" th:field="*{category}" required>
-                            <option value="categorie 1">categorie 1</option>
-                            <option value="categorie 2">categorie 2</option>
-                            <option value="categorie 3">categorie 3</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="colour" th:field="*{colour}" placeholder="Kleur" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="price" th:field="*{price}" placeholder="€ Prijs ,-" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="stock" th:field="*{stock}" placeholder="Op voorraad" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" th:field="*{description}" placeholder="Beschrijving" maxlength="140" rows="7"></textarea>
-                    </div>
-
-                    <button type="submit" name="submit" class="btn btn-primary pull-right">Creeër product</button>
-                </form>
-            </div>
-        </div>
-        </tbody>
-    </div>
-        <!--===============
-            Update product
-            ===============-->
-        <div class="col-md-5">
-            <div class="form-area">
-                <div th:if="${product == null}">
-                <td colspan="3">Geen product meegegeven</td>
                 </div>
-                <form action="productUpdate" th:action="@{/admin/products/productConfiguration}" th:object="${product}" method="post">
-                    <br style="clear:both">
-                    <h3 style="margin-bottom: 25px; text-align: center;">Product updaten</h3>
-                    <div class="form-group">
-                        <select class="form-control" name="productKeuze" th:field="*{productId}" placeholder="Kies een product" required>
-                            <span th:each="product : ${products}">
-                                <option th:value="${product.getProductId()}" th:text="${product.getProductId()}"></option>
-                            </span>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="name" th:field="*{productName}" placeholder="Product naam" th:value="${product.getProductName()}" required>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" name="categorie" th:field="*{category}" placeholder="Categorie" th:value="${product.getCategory()}" required>
-                            <option value="categorie 1">categorie 1</option>
-                            <option value="categorie 2">categorie 2</option>
-                            <option value="categorie 3">categorie 3</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="colour" th:field="*{colour}" placeholder="Kleur" th:value="${product.getColour()}" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="price" th:field="*{price}" placeholder="€ Prijs ,-" th:value="${product.getPrice()}" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="stock" th:field="*{stock}" placeholder="Op voorraad" th:value="${product.getStock()}" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" type="textarea" th:field="*{description}" placeholder="Beschrijving" maxlength="140" rows="7"></textarea>
-                    </div>
-
-                    <button type="submit" name="update" class="btn btn-primary pull-right">Update product</button>
-                </form>
-                <form action="productRemoval" th:action="@{admin/products/productRemoval/}" th:object="${product}" th:method="delete"> <!-- + ${product.productId} -->
-                    <div class="form-group">
-                        <select class="form-control" name="productKeuze" th:field="*{productId}" placeholder="Kies een product" required>
-                            <span th:each="product : ${products}">
-                                <option th:value="${product.getProductId()}" th:text="${product.getProductId()}"></option>
-                            </span>
-                        </select>
-                    </div>
-                    <button type="submit" name="remove" class="btn btn-primary pull-right">Delete product</button>
-                </form>
             </div>
-        </div>
+            <div th:if="${product.productId}!= null">
+            <div class="col-md-5">
+                <div class="form-area">
+
+                        <form class="form-group" action="/admin/products/productUpdate" th:action="@{/admin/products/productUpdate}" th:object="${product}" method="post">
+                            <h3 style="margin-bottom: 25px; text-align: center;">Product updaten</h3>
+                            <label>Product ID</label>
+                            <input th:type="text" name="id" th:field="${product.productId}" readonly/>
+                            <div class="form-group">
+                                <label for="title">ProductNaam</label>
+                                <input type="text" class="form-control" id="title" th:field="*{productName}" />
+                            </div>
+                            <div class="form-group">
+                                <label for="title">Categorie</label>
+                                <select class="form-control" name="categorie" th:field="*{category}" required>
+                                    <option value="categorie 1">categorie 1</option>
+                                    <option value="categorie 2">categorie 2</option>
+                                    <option value="categorie 3">categorie 3</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Kleur</label>
+                                <input type="text" class="form-control" name="colour" th:field="*{colour}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Prijs</label>
+                                <input type="text" class="form-control" name="price" th:field="*{price}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">voorraad</label>
+                                <input type="text" class="form-control" name="stock" th:field="*{stock}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Beschrijving</label>
+                                <textarea class="form-control" id="content" th:field="${product.description}" maxlength="140" rows="7"></textarea>
+                            </div>
+                            <a href="#" th:href="@{/}" class="btn btn-danger pull-right" style="margin-left: 5px;" role="button">Annuleren</a>
+                            <button type="submit" class="btn btn-primary pull-right" onclick="return confirm('Wil je doorgaan met opslaan?')">Updaten</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </tbody>
     </div>
-
 </body>
 </html>

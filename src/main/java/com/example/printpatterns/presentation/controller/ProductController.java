@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -29,11 +28,6 @@ public class ProductController {
     private ProductCatalogService productCatalogService;
 
     private ModelAndView modelAndView = new ModelAndView();
-
-    public ProductController(ProductService productService, ProductCatalogService productCatalogService){
-        this.productCatalogService = productCatalogService;
-        this.productService = productService;
-    }
 
     public void createProductCatalog(){
         ProductCatalog productCatalog = new ProductCatalog();
@@ -50,7 +44,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = {"admin/products/productConfiguration"}, method = RequestMethod.GET)
-    public ModelAndView createProduct(){
+    public ModelAndView productConfiguration(){
         Iterable<Product> products = productService.findAll();
         Product p = new Product();
         modelAndView.addObject("products", products);
@@ -60,27 +54,54 @@ public class ProductController {
     }
 
     @RequestMapping(value = {"admin/products/productCreation"}, method = RequestMethod.POST)
-    public String productSubmit(@Valid @ModelAttribute("Product")Product product, BindingResult result, Model uiModel){
-        if (result.hasErrors()){
-            productService.save(product);
-            return "error";
-        }
-        productService.save(product);
-        return "redirect:/admin/products/list";
+    public ModelAndView productCreation(@Valid @ModelAttribute("Product")Product product, BindingResult bindingResult, Model uiModel){
+        return createOrUpdateProduct(true, product, bindingResult, uiModel);
     }
 
-    /*
-    @RequestMapping(value={"admin/products/productUpdate/{productId}"}, method = RequestMethod.PUT)
-    public String productUpdate(@PathVariable("productId") Long productId, Model uiModel){
-        Product product = productService.findByProductId(productId);
-        uiModel.addAttribute("product", product);
+    @RequestMapping(value="admin/products/productUpdate/{productId}", method = RequestMethod.GET)
+    public String productUpdateForm(@PathVariable(required = false, name = "productId") Long productId, Model uiModel){
+        if (productId != null){
+            uiModel.addAttribute("product", productService.findByProductId(productId));
+        } else {
+            uiModel.addAttribute("product", new Product());
+        }
+        return "/admin/products/productConfiguration";
+    }
 
+    @RequestMapping(value={"admin/products/productUpdate"}, method = RequestMethod.POST)
+    public ModelAndView productUpdate(@Valid Product product, BindingResult bindingResult, Model uiModel){
+        return createOrUpdateProduct(false, product, bindingResult, uiModel);
+    }
 
-    } */
+    private ModelAndView createOrUpdateProduct(boolean isCreate, Product product, BindingResult bindingResult, Model uiModel){
+        if(bindingResult.hasErrors()){
+            uiModel.addAttribute("product",product);
+            return list();
+        }
+        uiModel.asMap().clear();
 
-    @RequestMapping(value = {"admin/products/productRemoval/{productId}"}, method = RequestMethod.DELETE)
-    public String productRemoval(@PathVariable("productId") Long productId, Model model, HttpServletResponse response) {
-        productService.removeByProductId(productId);
-        return "redirect:/admin/products/list";
+        if(isCreate){
+            productService.save(product);
+        } else {
+            Product existingProduct = productService.findByProductId(product.getProductId());
+            assert existingProduct != null : "product should exist";
+            existingProduct.updateEditableFields(product);
+            productService.save(product);
+        }
+        return list();
+    }
+
+    @RequestMapping(value = {"admin/products/productRemoval/{productId}"}, method = RequestMethod.GET)
+    public ModelAndView productRemoval(@PathVariable(name = "productId") Long productId) {
+        productService.deleteByProductId(productId);
+        return list();
+    }
+
+    @RequestMapping(value = {"products/productOverview"}, method = RequestMethod.GET)
+    public ModelAndView productOverview(){
+        Iterable<Product> products = productService.findAll();
+        modelAndView.addObject("products", products);
+        modelAndView.setViewName("products/productOverview");
+        return modelAndView;
     }
 }
