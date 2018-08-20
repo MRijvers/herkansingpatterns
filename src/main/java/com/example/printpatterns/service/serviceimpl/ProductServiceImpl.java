@@ -1,4 +1,4 @@
-package com.example.printpatterns.service.serviceimpl;
+package com.example.printpatterns.service.serviceImpl;
 
 import com.example.printpatterns.data.ProductRepository;
 import com.example.printpatterns.domain.entity.Product;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service("productService")
 @Repository

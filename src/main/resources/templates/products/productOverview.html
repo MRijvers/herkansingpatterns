@@ -2,16 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Producten Overzicht</title>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
-    <script src="https://use.fontawesome.com/c560c025cf.js"></script>
+    <script type="text/javascript" th:src="@{/webjars/popper.js/1.14.3/popper.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/4.7.0/css/font-awesome.min.css}">
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/4.1.3/js/bootstrap.bundle.min.js}"></script>
 </head>
 <body>
+<div th:replace="/fragments/header :: header">Header</div>
 <div class="container">
     <div class="row">
         <h1 align="center">Producten overzicht</h1>
@@ -21,7 +20,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col col-xs-6">
-                            <h3 class="panel-title">Alle producten</h3>
+                            <h3 class="panel-title">Home</h3>
                         </div>
                         <div class="col col-xs-6 pull-right">
                             <form th:action="@{/shoppingCart/cart}" method="GET" role="form">
@@ -45,7 +44,7 @@
                         <tbody>
                         <tr th:each="product : ${products}">
                             <td th:text="${product.getProductName()}"><a></a></td>
-                            <td align="center" th:text="${#numbers.formatCurrency(product.getPrice())}"></td>
+                            <td align="center">€ <span th:text="${#numbers.formatDecimal(product.getPrice(), 0, 2)}"></span></td>
                             <td align="center" th:text="${product.getCategory()}"></td>
                             <td align="center" th:text="${product.getColour()}"></td>
                             <td th:text="${product.getDescription()}"></td>
@@ -79,7 +78,9 @@
                     </div>
                 </div>
             </div>
-
-        </div></div></div>
+        </div>
+    </div>
+</div>
+<div th:replace="/fragments/footer :: footer">Header</div>
 </body>
 </html>
