@@ -6,31 +6,30 @@ import org.springframework.stereotype.Component;
 
 import java.awt.color.ProfileDataException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Component
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS, value = "session")
 public class ShoppingCart implements Serializable {
 
-    private List<ShoppingCartItem> cartCollection = new LinkedList<ShoppingCartItem>();
+    private HashMap<Long ,ShoppingCartItem> cartMap = new HashMap<>();
 
-    public synchronized void addProduct(Product product, int quantity){
-        ShoppingCartItem newItem = new ShoppingCartItem();
-        if(checkProductInCart(product)){
-            ShoppingCartItem existProd = cartCollection.get().getProduct().getProductId().equals(product.getProductId());
-            existProd.incrementQuantity();
-            cartCollection.add(existProd);
+    public synchronized void addProduct(Long id, Product product){
+        ShoppingCartItem cartItem = new ShoppingCartItem();
+        if(checkProductInCart(id)){
+            cartItem = cartMap.get(id);
+            cartItem.incrementQuantity();
+            cartMap.put(id, cartItem);
         } else {
-            cartMap.put(productId, newItem);
+            cartItem.setQuantity(1);
+            cartItem.setProduct(product);
+            cartMap.put(id, cartItem);
         }
     }
 
     public synchronized void updateQuantity(Long productId, int quantity, Product p) {
         if(cartMap.containsKey(productId)) {
-            ShoppingCartItem cartItem = (ShoppingCartItem) cartMap.get(productId);
+            ShoppingCartItem cartItem = cartMap.get(productId);
             cartItem.setQuantity(quantity);
         }
     }
@@ -52,7 +51,7 @@ public class ShoppingCart implements Serializable {
     }
 
     public synchronized List<ShoppingCartItem> getItems(){
-        List<ShoppingCartItem> listOfCartItems = new ArrayList<ShoppingCartItem>();
+        List<ShoppingCartItem> listOfCartItems = new ArrayList<>();
         listOfCartItems.addAll(this.cartMap.values());
         return listOfCartItems;
     }
@@ -68,11 +67,11 @@ public class ShoppingCart implements Serializable {
         return total;
     }
 
-    public boolean checkProductInCart(Product product){
-        if(cartCollection.isEmpty()) {
+    public boolean checkProductInCart(Long productId){
+        if(cartMap.isEmpty()) {
             return false;
         } else {
-            if (cartCollection.get()) {
+            if (cartMap.containsKey(productId)) {
                 return true;
             }
         }
