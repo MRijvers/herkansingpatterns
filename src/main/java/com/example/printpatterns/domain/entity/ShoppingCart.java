@@ -27,13 +27,6 @@ public class ShoppingCart implements Serializable {
         }
     }
 
-    public synchronized void updateQuantity(Long productId, int quantity, Product p) {
-        if(cartMap.containsKey(productId)) {
-            ShoppingCartItem cartItem = cartMap.get(productId);
-            cartItem.setQuantity(quantity);
-        }
-    }
-
     public synchronized void removeProduct(Long productId){
         if(cartMap.containsKey(productId)){
             ShoppingCartItem cartItem = cartMap.get(productId);
@@ -51,31 +44,24 @@ public class ShoppingCart implements Serializable {
     }
 
     public synchronized List<ShoppingCartItem> getItems(){
-        List<ShoppingCartItem> listOfCartItems = new ArrayList<>();
-        listOfCartItems.addAll(this.cartMap.values());
-        return listOfCartItems;
+        return new LinkedList<>(this.cartMap.values());
     }
 
     public synchronized double getTotal(){
         double total = 0.0;
-        Iterator<ShoppingCartItem> scItemIterator = getItems().iterator();
-        while (scItemIterator.hasNext()){
-            ShoppingCartItem scItem = scItemIterator.next();
+        for (ShoppingCartItem scItem : getItems()) {
             Product product = scItem.getProduct();
             total += (scItem.getQuantity() * product.getPrice());
         }
         return total;
     }
 
-    public boolean checkProductInCart(Long productId){
+    private boolean checkProductInCart(Long productId){
         if(cartMap.isEmpty()) {
             return false;
         } else {
-            if (cartMap.containsKey(productId)) {
-                return true;
-            }
+            return cartMap.containsKey(productId);
         }
-        return false;
     }
 
 }

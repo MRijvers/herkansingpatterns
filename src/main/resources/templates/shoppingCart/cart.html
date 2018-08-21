@@ -17,7 +17,7 @@
     <div class="card shopping-cart">
         <div class="card-header bg-dark text-light">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i> Winkelwagen
-            <a href="/products/productOverview" th:href="@{/products/productOverview}" class="btn btn-sm btn-primary pull-right">Continue shopping</a>
+            <a th:href="@{/products/productOverview}" class="btn btn-sm btn-primary pull-right">Continue shopping</a>
             <div class="clearfix"></div>
         </div>
 
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-4 col-sm-4 col-md-4">
                         <div class="quantity">
-                            <p>Aantal:<div th:text="${product.getQuantity()}" class="col-md-9"> </div></p>
+                            <div>Aantal:<div th:text="${product.getQuantity()}" class="col-md-9"></div></div>
                         </div>
                     </div>
                     <div class="col-2 col-sm-2 col-md-2 text-right">
