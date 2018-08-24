@@ -1,19 +1,28 @@
 package com.example.printpatterns.domain.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.awt.color.ProfileDataException;
 import java.io.Serializable;
 import java.util.*;
 
 @Component
+@Getter
+@Setter
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS, value = "session")
 public class ShoppingCart implements Serializable {
 
+    private Long ShoppingCartId;
     private HashMap<Long ,ShoppingCartItem> cartMap = new HashMap<>();
 
+    // Toevoegen van een product
+    // Check op al bestaan in shoppingcart +1 quantity
+    // *** Nog toevoegen outofstock
     public synchronized void addProduct(Long id, Product product){
         ShoppingCartItem cartItem = new ShoppingCartItem();
         if(checkProductInCart(id)){

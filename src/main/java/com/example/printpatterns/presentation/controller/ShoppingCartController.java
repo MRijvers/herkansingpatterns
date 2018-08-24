@@ -3,6 +3,7 @@ package com.example.printpatterns.presentation.controller;
 import com.example.printpatterns.domain.entity.Product;
 import com.example.printpatterns.domain.entity.ShoppingCart;
 import com.example.printpatterns.service.ProductService;
+import com.example.printpatterns.service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,9 @@ public class ShoppingCartController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ShoppingCartService shoppingCartService;
 
     private ModelAndView modelAndView = new ModelAndView();
 
@@ -58,9 +62,12 @@ public class ShoppingCartController {
         return shoppingCart(session);
     }
 
-    @RequestMapping( value = {"/checkout"}, method = RequestMethod.GET)
+    @RequestMapping( value = {"/cart/checkout"}, method = RequestMethod.GET)
     public ModelAndView checkout(HttpSession session) {
-
-        return shoppingCart(session);
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        shoppingCartService.save(cart);
+        modelAndView.addObject("cart", cart);
+        modelAndView.setViewName("shoppingCart/checkout");
+        return modelAndView;
     }
 }

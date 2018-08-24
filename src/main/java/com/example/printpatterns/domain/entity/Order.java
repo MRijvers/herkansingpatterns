@@ -1,6 +1,6 @@
 package com.example.printpatterns.domain.entity;
 
-
+/*
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,16 +14,17 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Table(name = "Orders")
+*/
 public class Order {
 
+    /*
     @Id
     @GeneratedValue
     private Long orderId;
 
     @OneToMany(cascade = javax.persistence.CascadeType.ALL)
-    private List<Product> orderProducts = new LinkedList<>();
+    private List<ShoppingCartItem> orderItems = new LinkedList<>();
 
-    public void addProductToOrder(Product p){
-        orderProducts.add(p);
-    }
+    private Customer customer;
+    */
 }

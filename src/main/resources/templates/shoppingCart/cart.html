@@ -57,7 +57,7 @@
                 <div class="pull-right" style="margin: 5px">
                     <h4 class="col-md-11" th:inline="text">Totaal: € [[${total}]]</h4>
                     <a th:href="@{'/shoppingCart/checkOut'}" class="col-md-1">
-                        <button type="button" class="btn btn-danger" th:text="Checkout">Checkout</button>
+                        <button type="button" class="btn btn-danger" th:href="@{/shoppingCart/cart/checkOut}" th:text="Checkout">Checkout</button>
                     </a>
                 </div>
             </div>
