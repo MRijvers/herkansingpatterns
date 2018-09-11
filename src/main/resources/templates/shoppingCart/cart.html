@@ -7,10 +7,6 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/cart.css}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -23,8 +19,7 @@
 
         <div class="card-body">
             <div class="row">
-                <div class="alert alert-info" th:if="${outOfStockMessage}" th:utext="${outOfStockMessage}"></div>
-                <div class="panel-default well" style="width: 1113px;" th:each="product : ${products}">
+                <div class="panel-default well" style="width: 1113px;" th:each="product : ${}">
                 <div class="col-12 col-sm-12 col-md-2 text-center">
                     <img class="img-responsive" src="http://placehold.it/120x80" alt="prewiew" width="120" height="80">
                 </div>
@@ -34,11 +29,11 @@
                 </div>
                 <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
                     <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
-                        <h6><strong>Prijs: € [[${product.getProduct().price}]] <span class="text-muted">x</span></strong></h6>
+                        <h6><strong>Prijs: € [[${#numbers.formatDecimal(product.getProduct().price, 0, 2)}]] <span class="text-muted">x</span></strong></h6>
                     </div>
                     <div class="col-4 col-sm-4 col-md-4">
                         <div class="quantity">
-                            <div>Aantal:<div th:text="${product.getQuantity()}" class="col-md-9"></div></div>
+                            <div class="col-md-12">Aantal:<div th:text="${product.getQuantity()}"></div></div>
                         </div>
                     </div>
                     <div class="col-2 col-sm-2 col-md-2 text-right">
@@ -55,7 +50,7 @@
         <div class="card-footer">
             <div class="pull-right" style="margin: 10px">
                 <div class="pull-right" style="margin: 5px">
-                    <h4 class="col-md-11" th:inline="text">Totaal: € [[${total}]]</h4>
+                    <h4 class="col-md-11" th:inline="text">Totaal: € [[${#numbers.formatDecimal(total, 0, 2)}]]</h4>
                     <a th:href="@{'/shoppingCart/checkOut'}" class="col-md-1">
                         <button type="button" class="btn btn-danger" th:href="@{/shoppingCart/cart/checkOut}" th:text="Checkout">Checkout</button>
                     </a>
