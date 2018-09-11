@@ -1,8 +1,6 @@
 package com.example.printpatterns.presentation.controller;
 
 import com.example.printpatterns.domain.entity.Product;
-import com.example.printpatterns.domain.entity.ProductCatalog;
-import com.example.printpatterns.service.ProductCatalogService;
 import com.example.printpatterns.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,15 +22,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private ProductCatalogService productCatalogService;
-
     private ModelAndView modelAndView = new ModelAndView();
-
-    public void createProductCatalog(){
-        ProductCatalog productCatalog = new ProductCatalog();
-        productCatalog = productCatalogService.save(productCatalog);
-    }
 
     @Transactional
     @RequestMapping(value = {"admin/products/list"}, method = RequestMethod.GET)

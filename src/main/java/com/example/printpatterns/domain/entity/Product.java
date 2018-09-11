@@ -22,7 +22,7 @@ public class Product implements Serializable
     private Long productId;
     private String productName;
     private String description;
-    private BigDecimal price;
+    private double price;
     private int stock;
     private String category;
     private String colour;

@@ -1,4 +1,4 @@
-package com.example.printpatterns.service.serviceimpl;
+package com.example.printpatterns.service.serviceImpl;
 
 import com.example.printpatterns.data.ProductRepository;
 import com.example.printpatterns.domain.entity.Product;
