@@ -48,7 +48,7 @@
                             <td align="center" th:text="${product.getColour()}"></td>
                             <td th:text="${product.getDescription()}"></td>
                             <td>
-                            <form th:action="@{/shoppingCart/cart/addProduct/__${product.getProductId()}__}" method="GET" role="form">
+                            <form th:action="@{/shoppingCart/${cartId}/${product.productId}" method="POST" role="form">
                                 <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart</button>
                             </form>
                             </td>
